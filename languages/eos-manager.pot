@@ -1,0 +1,53 @@
+# EOS Manager Translation Template
+# Copyright (C) 2024 EOS Manager
+# This file is distributed under the same license as the EOS Manager package.
+msgid ""
+msgstr ""
+"Project-Id-Version: EOS Manager 1.0.0\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: \n"
+
+msgid "EOS Manager"
+msgstr ""
+
+msgid "90-Day Rocks"
+msgstr ""
+
+msgid "Company Scorecard"
+msgstr ""
+
+msgid "Issues List"
+msgstr ""
+
+msgid "L10 Meetings"
+msgstr ""
+
+msgid "People Analyzer"
+msgstr ""
+
+msgid "Vision/Traction Organizer"
+msgstr ""
+
+msgid "On Track"
+msgstr ""
+
+msgid "At Risk"
+msgstr ""
+
+msgid "Behind"
+msgstr ""
+
+msgid "Add New Rock"
+msgstr ""
+
+msgid "Save Rock"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
