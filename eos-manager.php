@@ -72,6 +72,7 @@ class EOS_Manager {
         require_once EOS_MANAGER_PLUGIN_DIR . 'includes/class-eos-scorecard.php';
         require_once EOS_MANAGER_PLUGIN_DIR . 'includes/class-eos-issues.php';
         require_once EOS_MANAGER_PLUGIN_DIR . 'includes/class-eos-meetings.php';
+        require_once EOS_MANAGER_PLUGIN_DIR . 'includes/class-eos-todos.php';
         require_once EOS_MANAGER_PLUGIN_DIR . 'includes/class-eos-people.php';
         require_once EOS_MANAGER_PLUGIN_DIR . 'includes/class-eos-vto.php';
         require_once EOS_MANAGER_PLUGIN_DIR . 'includes/class-eos-integrations.php';
@@ -294,7 +295,12 @@ class EOS_Manager {
      * Render meetings page
      */
     public function render_meetings_page() {
-        include EOS_MANAGER_PLUGIN_DIR . 'admin/views/meetings.php';
+        $action = isset($_GET['action']) ? sanitize_key($_GET['action']) : '';
+        if ($action === 'run') {
+            include EOS_MANAGER_PLUGIN_DIR . 'admin/views/meeting-run.php';
+        } else {
+            include EOS_MANAGER_PLUGIN_DIR . 'admin/views/meetings.php';
+        }
     }
     
     /**

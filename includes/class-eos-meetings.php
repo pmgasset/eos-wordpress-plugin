@@ -271,11 +271,16 @@ class EOS_Meetings {
             self::log_activity('completed', $meeting_id, $meeting['title']);
             
             // Create to-dos from action items
+            $todo_success = true;
             if (!empty($action_items)) {
-                self::create_todos_from_action_items($meeting_id, $action_items);
+                $todo_success = self::create_todos_from_action_items($meeting_id, $action_items);
             }
-            
-            return array('success' => true, 'message' => __('Meeting completed successfully.', 'eos-manager'));
+
+            $message = $todo_success
+                ? __('Meeting completed successfully.', 'eos-manager')
+                : __('Meeting completed, but some to-dos could not be saved.', 'eos-manager');
+
+            return array('success' => true, 'message' => $message);
         }
         
         return array('success' => false, 'message' => __('Failed to complete meeting.', 'eos-manager'));
@@ -285,11 +290,12 @@ class EOS_Meetings {
      * Create Google Meet link (placeholder - would integrate with Google Calendar API)
      */
     public static function create_google_meet_link($meeting_data) {
-        // In a real implementation, this would integrate with Google Calendar API
-        // For now, we'll return a placeholder link
-        
-        $meet_id = 'eos-' . uniqid();
-        return 'https://meet.google.com/' . $meet_id;
+        $link = EOS_Integrations::create_google_meet_event($meeting_data);
+        if (empty($link)) {
+            $meet_id = 'eos-' . uniqid();
+            $link = 'https://meet.google.com/' . $meet_id;
+        }
+        return $link;
     }
     
     /**
@@ -397,25 +403,30 @@ class EOS_Meetings {
      */
     private static function create_todos_from_action_items($meeting_id, $action_items) {
         $lines = explode("\n", $action_items);
-        
+        $all_success = true;
+
         foreach ($lines as $line) {
             $line = trim($line);
             if (empty($line)) continue;
-            
-            // Parse action item format: "Task - Assignee (Due Date)"
+
             if (preg_match('/^(.+?)\s*-\s*(.+?)(?:\s*\((.+?)\))?$/', $line, $matches)) {
                 $task = trim($matches[1]);
                 $assignee = trim($matches[2]);
                 $due_date = isset($matches[3]) ? trim($matches[3]) : '';
-                
-                EOS_Todos::create_todo(array(
+
+                $result = EOS_Todos::create_todo(array(
                     'title' => $task,
                     'assignee' => $assignee,
                     'due_date' => $due_date ? date('Y-m-d', strtotime($due_date)) : '',
                     'meeting_id' => $meeting_id
                 ));
+                if (!$result) {
+                    $all_success = false;
+                }
             }
         }
+
+        return $all_success;
     }
     
     /**
