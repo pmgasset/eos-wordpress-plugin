@@ -28,10 +28,10 @@ $upcoming_meetings = EOS_Meetings::get_upcoming(1);
                 </div>
             </div>
             <div class="eos-quick-actions">
-                <a href="<?php echo admin_url('admin.php?page=eos-meetings&action=start'); ?>" class="eos-action-btn primary">
+                <a href="<?php echo esc_url(admin_url('admin.php?page=eos-meetings&action=start')); ?>" class="eos-action-btn primary">
                     <?php _e('Start L10 Meeting', 'eos-manager'); ?>
                 </a>
-                <a href="<?php echo admin_url('admin.php?page=eos-scorecard'); ?>" class="eos-action-btn">
+                <a href="<?php echo esc_url(admin_url('admin.php?page=eos-scorecard')); ?>" class="eos-action-btn">
                     <?php _e('Weekly Review', 'eos-manager'); ?>
                 </a>
                 <a href="#" class="eos-action-btn" onclick="openModal('addRockModal')">
@@ -45,27 +45,27 @@ $upcoming_meetings = EOS_Meetings::get_upcoming(1);
     <div class="eos-dashboard-grid">
         
         <!-- Rocks Card -->
-        <div class="eos-dashboard-card" onclick="location.href='<?php echo admin_url('admin.php?page=eos-rocks'); ?>'">
+        <div class="eos-dashboard-card" onclick="location.href='<?php echo esc_url(admin_url('admin.php?page=eos-rocks')); ?>'">
             <div class="eos-card-header">
                 <div class="eos-card-title">
                     <div class="eos-card-icon rocks">🎯</div>
                     <span><?php _e('90-Day Rocks', 'eos-manager'); ?></span>
                 </div>
-                <a href="<?php echo admin_url('admin.php?page=eos-rocks'); ?>" class="eos-card-action">
+                <a href="<?php echo esc_url(admin_url('admin.php?page=eos-rocks')); ?>" class="eos-card-action">
                     <?php _e('View All', 'eos-manager'); ?> →
                 </a>
             </div>
             <div class="eos-card-stats">
                 <div class="eos-stat-item">
-                    <span class="eos-stat-number"><?php echo $rocks_stats['on_track']; ?></span>
+                    <span class="eos-stat-number"><?php echo esc_html($rocks_stats['on_track']); ?></span>
                     <span class="eos-stat-label"><?php _e('On Track', 'eos-manager'); ?></span>
                 </div>
                 <div class="eos-stat-item">
-                    <span class="eos-stat-number"><?php echo $rocks_stats['at_risk']; ?></span>
+                    <span class="eos-stat-number"><?php echo esc_html($rocks_stats['at_risk']); ?></span>
                     <span class="eos-stat-label"><?php _e('At Risk', 'eos-manager'); ?></span>
                 </div>
                 <div class="eos-stat-item">
-                    <span class="eos-stat-number"><?php echo $rocks_stats['behind']; ?></span>
+                    <span class="eos-stat-number"><?php echo esc_html($rocks_stats['behind']); ?></span>
                     <span class="eos-stat-label"><?php _e('Behind', 'eos-manager'); ?></span>
                 </div>
             </div>
@@ -76,8 +76,8 @@ $upcoming_meetings = EOS_Meetings::get_upcoming(1);
                     printf(
                         __('Most urgent: "%s" (%d%% complete, due in %d days)', 'eos-manager'),
                         esc_html($urgent_rock['title']),
-                        $urgent_rock['progress'],
-                        $urgent_rock['days_remaining']
+                        intval($urgent_rock['progress']),
+                        intval($urgent_rock['days_remaining'])
                     );
                 } else {
                     _e('No active rocks found. Time to set some priorities!', 'eos-manager');
@@ -93,7 +93,7 @@ $upcoming_meetings = EOS_Meetings::get_upcoming(1);
                     <div class="eos-card-icon meetings">📅</div>
                     <span><?php _e('L10 Meetings', 'eos-manager'); ?></span>
                 </div>
-                <a href="<?php echo admin_url('admin.php?page=eos-meetings'); ?>" class="eos-card-action">
+                <a href="<?php echo esc_url(admin_url('admin.php?page=eos-meetings')); ?>" class="eos-card-action">
                     <?php _e('Schedule', 'eos-manager'); ?> →
                 </a>
             </div>
@@ -116,23 +116,23 @@ $upcoming_meetings = EOS_Meetings::get_upcoming(1);
         </div>
 
         <!-- Scorecard Card -->
-        <div class="eos-dashboard-card" onclick="location.href='<?php echo admin_url('admin.php?page=eos-scorecard'); ?>'">
+        <div class="eos-dashboard-card" onclick="location.href='<?php echo esc_url(admin_url('admin.php?page=eos-scorecard')); ?>'">
             <div class="eos-card-header">
                 <div class="eos-card-title">
                     <div class="eos-card-icon scorecard">📊</div>
                     <span><?php _e('Company Scorecard', 'eos-manager'); ?></span>
                 </div>
-                <a href="<?php echo admin_url('admin.php?page=eos-scorecard'); ?>" class="eos-card-action">
+                <a href="<?php echo esc_url(admin_url('admin.php?page=eos-scorecard')); ?>" class="eos-card-action">
                     <?php _e('Update', 'eos-manager'); ?> →
                 </a>
             </div>
             <div class="eos-card-stats">
                 <div class="eos-stat-item">
-                    <span class="eos-stat-number"><?php echo $scorecard_stats['health_percentage']; ?>%</span>
+                    <span class="eos-stat-number"><?php echo esc_html($scorecard_stats['health_percentage']); ?>%</span>
                     <span class="eos-stat-label"><?php _e('Health', 'eos-manager'); ?></span>
                 </div>
                 <div class="eos-stat-item">
-                    <span class="eos-stat-number"><?php echo $scorecard_stats['on_target']; ?>/<?php echo $scorecard_stats['total']; ?></span>
+                    <span class="eos-stat-number"><?php echo esc_html($scorecard_stats['on_target']); ?>/<?php echo esc_html($scorecard_stats['total']); ?></span>
                     <span class="eos-stat-label"><?php _e('On Target', 'eos-manager'); ?></span>
                 </div>
             </div>
@@ -141,7 +141,7 @@ $upcoming_meetings = EOS_Meetings::get_upcoming(1);
                 if ($scorecard_stats['behind'] > 0) {
                     printf(
                         __('%d metrics behind target this week.', 'eos-manager'),
-                        $scorecard_stats['behind']
+                        intval($scorecard_stats['behind'])
                     );
                 } else {
                     _e('All metrics on or above target this week!', 'eos-manager');
@@ -151,23 +151,23 @@ $upcoming_meetings = EOS_Meetings::get_upcoming(1);
         </div>
 
         <!-- Issues List Card -->
-        <div class="eos-dashboard-card" onclick="location.href='<?php echo admin_url('admin.php?page=eos-issues'); ?>'">
+        <div class="eos-dashboard-card" onclick="location.href='<?php echo esc_url(admin_url('admin.php?page=eos-issues')); ?>'">
             <div class="eos-card-header">
                 <div class="eos-card-title">
                     <div class="eos-card-icon issues">⚠️</div>
                     <span><?php _e('Issues List', 'eos-manager'); ?></span>
                 </div>
-                <a href="<?php echo admin_url('admin.php?page=eos-issues'); ?>" class="eos-card-action">
+                <a href="<?php echo esc_url(admin_url('admin.php?page=eos-issues')); ?>" class="eos-card-action">
                     <?php _e('Manage', 'eos-manager'); ?> →
                 </a>
             </div>
             <div class="eos-card-stats">
                 <div class="eos-stat-item">
-                    <span class="eos-stat-number"><?php echo $issues_stats['high_priority']; ?></span>
+                    <span class="eos-stat-number"><?php echo esc_html($issues_stats['high_priority']); ?></span>
                     <span class="eos-stat-label"><?php _e('High Priority', 'eos-manager'); ?></span>
                 </div>
                 <div class="eos-stat-item">
-                    <span class="eos-stat-number"><?php echo $issues_stats['total_open']; ?></span>
+                    <span class="eos-stat-number"><?php echo esc_html($issues_stats['total_open']); ?></span>
                     <span class="eos-stat-label"><?php _e('Total Open', 'eos-manager'); ?></span>
                 </div>
             </div>
@@ -187,23 +187,23 @@ $upcoming_meetings = EOS_Meetings::get_upcoming(1);
         </div>
 
         <!-- People Analyzer Card -->
-        <div class="eos-dashboard-card" onclick="location.href='<?php echo admin_url('admin.php?page=eos-people'); ?>'">
+        <div class="eos-dashboard-card" onclick="location.href='<?php echo esc_url(admin_url('admin.php?page=eos-people')); ?>'">
             <div class="eos-card-header">
                 <div class="eos-card-title">
                     <div class="eos-card-icon people">👥</div>
                     <span><?php _e('People Analyzer', 'eos-manager'); ?></span>
                 </div>
-                <a href="<?php echo admin_url('admin.php?page=eos-people'); ?>" class="eos-card-action">
+                <a href="<?php echo esc_url(admin_url('admin.php?page=eos-people')); ?>" class="eos-card-action">
                     <?php _e('Assess', 'eos-manager'); ?> →
                 </a>
             </div>
             <div class="eos-card-stats">
                 <div class="eos-stat-item">
-                    <span class="eos-stat-number"><?php echo $people_stats['right_seat']; ?></span>
+                    <span class="eos-stat-number"><?php echo esc_html($people_stats['right_seat']); ?></span>
                     <span class="eos-stat-label"><?php _e('Right Seat', 'eos-manager'); ?></span>
                 </div>
                 <div class="eos-stat-item">
-                    <span class="eos-stat-number"><?php echo $people_stats['need_review']; ?></span>
+                    <span class="eos-stat-number"><?php echo esc_html($people_stats['need_review']); ?></span>
                     <span class="eos-stat-label"><?php _e('Need Review', 'eos-manager'); ?></span>
                 </div>
             </div>
@@ -212,7 +212,7 @@ $upcoming_meetings = EOS_Meetings::get_upcoming(1);
                 if ($people_stats['need_review'] > 0) {
                     printf(
                         __('%d people need GWC assessment.', 'eos-manager'),
-                        $people_stats['need_review']
+                        intval($people_stats['need_review'])
                     );
                 } else {
                     _e('All team members are in the right seats!', 'eos-manager');
@@ -222,13 +222,13 @@ $upcoming_meetings = EOS_Meetings::get_upcoming(1);
         </div>
 
         <!-- Vision/Traction Organizer Card -->
-        <div class="eos-dashboard-card" onclick="location.href='<?php echo admin_url('admin.php?page=eos-vto'); ?>'">
+        <div class="eos-dashboard-card" onclick="location.href='<?php echo esc_url(admin_url('admin.php?page=eos-vto')); ?>'">
             <div class="eos-card-header">
                 <div class="eos-card-title">
                     <div class="eos-card-icon vto">🎯</div>
                     <span><?php _e('Vision/Traction Organizer', 'eos-manager'); ?></span>
                 </div>
-                <a href="<?php echo admin_url('admin.php?page=eos-vto'); ?>" class="eos-card-action">
+                <a href="<?php echo esc_url(admin_url('admin.php?page=eos-vto')); ?>" class="eos-card-action">
                     <?php _e('Review', 'eos-manager'); ?> →
                 </a>
             </div>
@@ -242,7 +242,7 @@ $upcoming_meetings = EOS_Meetings::get_upcoming(1);
                     _e('Define your vision and organize for traction', 'eos-manager');
                 }
                 ?>
-                <br><small><?php printf(__('Last updated: %s', 'eos-manager'), EOS_VTO::get_last_updated()); ?></small>
+                  <br><small><?php printf(__('Last updated: %s', 'eos-manager'), esc_html(EOS_VTO::get_last_updated())); ?></small>
             </div>
         </div>
 
@@ -261,7 +261,7 @@ $upcoming_meetings = EOS_Meetings::get_upcoming(1);
             ?>
                 <div class="eos-activity-item">
                     <div class="eos-activity-icon <?php echo esc_attr($activity['type']); ?>">
-                        <?php echo $activity['icon']; ?>
+                    <?php echo wp_kses_post($activity['icon']); ?>
                     </div>
                     <div class="eos-activity-content">
                         <div class="eos-activity-text">
@@ -269,7 +269,10 @@ $upcoming_meetings = EOS_Meetings::get_upcoming(1);
                             <?php echo esc_html($activity['description']); ?>
                         </div>
                         <div class="eos-activity-time">
-                            <?php echo human_time_diff(strtotime($activity['created_at']), current_time('timestamp')) . ' ' . __('ago', 'eos-manager'); ?>
+                            <?php
+                            $time_diff = human_time_diff(strtotime($activity['created_at']), current_time('timestamp'));
+                            echo esc_html($time_diff) . ' ' . esc_html__('ago', 'eos-manager');
+                            ?>
                         </div>
                     </div>
                 </div>
@@ -319,7 +322,7 @@ $upcoming_meetings = EOS_Meetings::get_upcoming(1);
                 </div>
                 <div class="eos-form-field">
                     <label><?php _e('Date & Time', 'eos-manager'); ?></label>
-                    <input type="datetime-local" id="meetingDateTime" value="<?php echo date('Y-m-d\TH:i'); ?>">
+                    <input type="datetime-local" id="meetingDateTime" value="<?php echo esc_attr(date('Y-m-d\TH:i')); ?>">
                 </div>
             </div>
             <div class="eos-form-field">
@@ -399,7 +402,7 @@ function startL10Meeting() {
     const attendees = document.getElementById('meetingAttendees').value;
     
     // Redirect to full L10 meeting interface
-    window.location.href = `<?php echo admin_url('admin.php?page=eos-meetings&action=start'); ?>&title=${encodeURIComponent(title)}&datetime=${encodeURIComponent(dateTime)}&attendees=${encodeURIComponent(attendees)}`;
+      window.location.href = `<?php echo esc_url(admin_url('admin.php?page=eos-meetings&action=start')); ?>&title=${encodeURIComponent(title)}&datetime=${encodeURIComponent(dateTime)}&attendees=${encodeURIComponent(attendees)}`;
 }
 
 function scheduleL10Meeting() {
@@ -416,7 +419,7 @@ function saveRock() {
         due_date: document.getElementById('rockDueDate').value,
         description: document.getElementById('rockDescription').value,
         action: 'eos_save_rock',
-        nonce: '<?php echo wp_create_nonce('eos_nonce'); ?>'
+          nonce: '<?php echo esc_js(wp_create_nonce('eos_nonce')); ?>'
     };
     
     jQuery.post(ajaxurl, rockData, function(response) {

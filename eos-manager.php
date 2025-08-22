@@ -62,11 +62,8 @@ class EOS_Manager {
         // Add EOS quick links to admin bar
         add_action('admin_bar_menu', array($this, 'add_admin_bar_links'), 100);
         
-        // AJAX handlers
-        add_action('wp_ajax_eos_save_rock', array($this, 'ajax_save_rock'));
-        add_action('wp_ajax_eos_save_issue', array($this, 'ajax_save_issue'));
+        // AJAX handlers handled by module classes except scorecard
         add_action('wp_ajax_eos_save_scorecard', array($this, 'ajax_save_scorecard'));
-        add_action('wp_ajax_eos_save_meeting', array($this, 'ajax_save_meeting'));
     }
     
     /**
@@ -301,66 +298,28 @@ class EOS_Manager {
     }
     
     /**
-     * AJAX handler for saving rocks
-     */
-    public function ajax_save_rock() {
-        check_ajax_referer('eos_nonce', 'nonce');
-        
-        if (!current_user_can('manage_options')) {
-            wp_die('Unauthorized');
-        }
-        
-        $rock_data = $_POST['rock_data'];
-        $result = EOS_Rocks::save_rock($rock_data);
-        
-        wp_send_json($result);
-    }
-    
-    /**
-     * AJAX handler for saving issues
-     */
-    public function ajax_save_issue() {
-        check_ajax_referer('eos_nonce', 'nonce');
-        
-        if (!current_user_can('manage_options')) {
-            wp_die('Unauthorized');
-        }
-        
-        $issue_data = $_POST['issue_data'];
-        $result = EOS_Issues::save_issue($issue_data);
-        
-        wp_send_json($result);
-    }
-    
-    /**
      * AJAX handler for saving scorecard
      */
     public function ajax_save_scorecard() {
         check_ajax_referer('eos_nonce', 'nonce');
-        
+
         if (!current_user_can('manage_options')) {
-            wp_die('Unauthorized');
+            wp_send_json_error(__('Unauthorized', 'eos-manager'));
         }
-        
-        $scorecard_data = $_POST['scorecard_data'];
-        $result = EOS_Scorecard::save_metrics($scorecard_data);
-        
-        wp_send_json($result);
-    }
-    
-    /**
-     * AJAX handler for saving meeting data
-     */
-    public function ajax_save_meeting() {
-        check_ajax_referer('eos_nonce', 'nonce');
-        
-        if (!current_user_can('manage_options')) {
-            wp_die('Unauthorized');
+
+        $scorecard_data = isset($_POST['scorecard_data']) ? wp_unslash($_POST['scorecard_data']) : array();
+
+        if (!is_array($scorecard_data)) {
+            wp_send_json_error(__('Invalid data.', 'eos-manager'));
         }
-        
-        $meeting_data = $_POST['meeting_data'];
-        $result = EOS_Meetings::save_meeting($meeting_data);
-        
+
+        $sanitized = array();
+        foreach ($scorecard_data as $key => $value) {
+            $sanitized[sanitize_key($key)] = is_array($value) ? array_map('sanitize_text_field', $value) : sanitize_text_field($value);
+        }
+
+        $result = EOS_Scorecard::save_metrics($sanitized);
+
         wp_send_json($result);
     }
 }
@@ -439,4 +398,3 @@ function eos_shortcode($atts) {
 }
 add_shortcode('eos', 'eos_shortcode');
 
-?>

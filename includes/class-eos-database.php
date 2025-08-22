@@ -241,15 +241,18 @@ class EOS_Database {
         );
         
         foreach ($default_sections as $section => $content) {
-            $wpdb->insert(
-                $table_vto,
-                array(
-                    'section' => $section,
-                    'content' => $content,
-                    'updated_by' => get_current_user_id()
-                ),
-                array('%s', '%s', '%d')
-            );
+            $exists = $wpdb->get_var($wpdb->prepare("SELECT id FROM $table_vto WHERE section = %s", $section));
+            if (!$exists) {
+                $wpdb->insert(
+                    $table_vto,
+                    array(
+                        'section' => $section,
+                        'content' => $content,
+                        'updated_by' => get_current_user_id()
+                    ),
+                    array('%s', '%s', '%d')
+                );
+            }
         }
     }
     
