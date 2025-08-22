@@ -19,6 +19,10 @@ class EOS_Admin {
         if (!EOS_Database::tables_exist()) {
             EOS_Database::maybe_update_db();
         }
+
+        register_setting('eos_integrations', 'eos_google_client_id');
+        register_setting('eos_integrations', 'eos_google_client_secret');
+        register_setting('eos_integrations', 'eos_google_access_token');
     }
     
     public function admin_notices() {
