@@ -552,5 +552,3 @@ class EOS_Rocks {
         wp_send_json($result);
     }
 }
-
-?>

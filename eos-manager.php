@@ -50,9 +50,6 @@ class EOS_Manager {
      * Initialize WordPress hooks
      */
     private function init_hooks() {
-        register_activation_hook(__FILE__, array($this, 'activate'));
-        register_deactivation_hook(__FILE__, array($this, 'deactivate'));
-        
         add_action('init', array($this, 'init'));
         add_action('admin_menu', array($this, 'add_admin_menu'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
@@ -85,7 +82,10 @@ class EOS_Manager {
     /**
      * Plugin activation
      */
-    public function activate() {
+    public static function activate() {
+        // Ensure database class is available
+        require_once EOS_MANAGER_PLUGIN_DIR . 'includes/class-eos-database.php';
+
         // Create database tables
         EOS_Database::create_tables();
         
@@ -100,7 +100,7 @@ class EOS_Manager {
     /**
      * Plugin deactivation
      */
-    public function deactivate() {
+    public static function deactivate() {
         // Clean up scheduled events
         wp_clear_scheduled_hook('eos_daily_scorecard_reminder');
         wp_clear_scheduled_hook('eos_weekly_l10_reminder');
@@ -323,6 +323,10 @@ class EOS_Manager {
         wp_send_json($result);
     }
 }
+
+// Register activation and deactivation hooks
+register_activation_hook(__FILE__, array('EOS_Manager', 'activate'));
+register_deactivation_hook(__FILE__, array('EOS_Manager', 'deactivate'));
 
 // Initialize the plugin
 add_action('plugins_loaded', array('EOS_Manager', 'get_instance'));

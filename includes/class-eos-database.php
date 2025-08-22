@@ -308,11 +308,9 @@ class EOS_Database {
      */
     public static function maybe_update_db() {
         $current_db_version = get_option('eos_manager_db_version', '0');
-        
+
         if (version_compare($current_db_version, '1.0', '<')) {
             self::create_tables();
         }
     }
 }
-
-?>

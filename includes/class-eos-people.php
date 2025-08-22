@@ -510,7 +510,7 @@ class EOS_People {
                 $activity_data['icon'] = '👥';
                 break;
             case 'updated':
-                $activity_data['description'] = sprintf(__'Team member "%s" was updated', 'eos-manager'), $person_name);
+                $activity_data['description'] = sprintf(__('Team member "%s" was updated', 'eos-manager'), $person_name);
                 $activity_data['icon'] = '✏️';
                 break;
             case 'gwc_updated':
@@ -601,5 +601,3 @@ class EOS_People {
         wp_send_json($result);
     }
 }
-
-?>

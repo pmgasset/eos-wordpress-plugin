@@ -598,5 +598,3 @@ class EOS_Issues {
         wp_send_json($result);
     }
 }
-
-?>

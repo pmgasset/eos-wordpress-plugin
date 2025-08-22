@@ -97,17 +97,29 @@ $upcoming_meetings = EOS_Meetings::get_upcoming(1);
                     <?php _e('Schedule', 'eos-manager'); ?> →
                 </a>
             </div>
-            <?php if (!empty($upcoming_meetings)): ?>
+            <?php if (!empty($upcoming_meetings)) : ?>
                 <div class="eos-next-meeting">
                     <?php
                     $next_meeting = $upcoming_meetings[0];
-                    $meeting_date = new DateTime($next_meeting['meeting_date']);
-                    printf(
-                        __('Next: %s', 'eos-manager'),
-                        $meeting_date->format('l g:i A - ') . esc_html($next_meeting['title'])
-                    );
+                    if (!empty($next_meeting['meeting_date'])) {
+                        try {
+                            $meeting_date = new DateTime($next_meeting['meeting_date']);
+                            printf(
+                                esc_html__('Next: %s', 'eos-manager'),
+                                $meeting_date->format('l g:i A - ') . esc_html($next_meeting['title'])
+                            );
+                            echo ' <span class="eos-google-meet-badge">📹 Meet</span>';
+                        } catch (Exception $e) {
+                            esc_html_e('Next meeting date unavailable.', 'eos-manager');
+                        }
+                    } else {
+                        esc_html_e('No upcoming meetings scheduled.', 'eos-manager');
+                    }
                     ?>
-                    <span class="eos-google-meet-badge">📹 Meet</span>
+                </div>
+            <?php else : ?>
+                <div class="eos-next-meeting">
+                    <?php esc_html_e('No upcoming meetings scheduled.', 'eos-manager'); ?>
                 </div>
             <?php endif; ?>
             <div class="eos-card-preview">
@@ -465,4 +477,3 @@ add_action('admin_footer', function() {
     </style>
     <?php
 });
-?>

@@ -63,4 +63,3 @@ class EOS_Integrations {
         return !is_wp_error($response);
     }
 }
-?>
