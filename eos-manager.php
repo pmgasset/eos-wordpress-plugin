@@ -179,6 +179,16 @@ class EOS_Manager {
             'eos-meetings',
             array($this, 'render_meetings_page')
         );
+
+        // Settings submenu for integrations
+        add_submenu_page(
+            'eos-manager',
+            __('Google Calendar', 'eos-manager'),
+            __('Google Calendar', 'eos-manager'),
+            'manage_options',
+            'eos-google-calendar',
+            array($this, 'render_google_calendar_page')
+        );
     }
     
     /**
@@ -301,6 +311,13 @@ class EOS_Manager {
         } else {
             include EOS_MANAGER_PLUGIN_DIR . 'admin/views/meetings.php';
         }
+    }
+
+    /**
+     * Render Google Calendar settings page
+     */
+    public function render_google_calendar_page() {
+        include EOS_MANAGER_PLUGIN_DIR . 'admin/views/google-calendar-settings.php';
     }
     
     /**
