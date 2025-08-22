@@ -31,7 +31,7 @@ $upcoming_meetings = EOS_Meetings::get_upcoming(1);
                 <a href="<?php echo esc_url(admin_url('admin.php?page=eos-meetings&action=start')); ?>" class="eos-action-btn primary">
                     <?php _e('Start L10 Meeting', 'eos-manager'); ?>
                 </a>
-                <a href="<?php echo esc_url(admin_url('admin.php?page=eos-scorecard')); ?>" class="eos-action-btn">
+                <a href="<?php echo esc_url(admin_url('admin.php?page=eos-weekly-review')); ?>" class="eos-action-btn">
                     <?php _e('Weekly Review', 'eos-manager'); ?>
                 </a>
                 <a href="#" class="eos-action-btn" onclick="openModal('addRockModal')">
