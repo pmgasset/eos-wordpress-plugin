@@ -85,4 +85,3 @@ class EOS_VTO {
         }
     }
 }
-?>

@@ -641,5 +641,3 @@ class EOS_Scorecard {
         wp_send_json($result);
     }
 }
-
-?>

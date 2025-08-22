@@ -30,4 +30,3 @@ class EOS_Admin {
         }
     }
 }
-?>

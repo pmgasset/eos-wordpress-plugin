@@ -694,5 +694,3 @@ class EOS_REST_API {
         );
     }
 }
-
-?>

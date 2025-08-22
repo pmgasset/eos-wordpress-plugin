@@ -241,15 +241,18 @@ class EOS_Database {
         );
         
         foreach ($default_sections as $section => $content) {
-            $wpdb->insert(
-                $table_vto,
-                array(
-                    'section' => $section,
-                    'content' => $content,
-                    'updated_by' => get_current_user_id()
-                ),
-                array('%s', '%s', '%d')
-            );
+            $exists = $wpdb->get_var($wpdb->prepare("SELECT id FROM $table_vto WHERE section = %s", $section));
+            if (!$exists) {
+                $wpdb->insert(
+                    $table_vto,
+                    array(
+                        'section' => $section,
+                        'content' => $content,
+                        'updated_by' => get_current_user_id()
+                    ),
+                    array('%s', '%s', '%d')
+                );
+            }
         }
     }
     
@@ -305,11 +308,9 @@ class EOS_Database {
      */
     public static function maybe_update_db() {
         $current_db_version = get_option('eos_manager_db_version', '0');
-        
+
         if (version_compare($current_db_version, '1.0', '<')) {
             self::create_tables();
         }
     }
 }
-
-?>

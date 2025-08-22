@@ -644,5 +644,3 @@ class EOS_Meetings {
         wp_send_json(array('success' => true, 'meet_link' => $meet_link));
     }
 }
-
-?>
