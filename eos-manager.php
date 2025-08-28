@@ -55,12 +55,14 @@ class EOS_Manager {
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
         add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_scripts'));
         add_action('rest_api_init', array($this, 'register_rest_routes'));
-        
+
         // Add EOS quick links to admin bar
         add_action('admin_bar_menu', array($this, 'add_admin_bar_links'), 100);
-        
+
         // AJAX handlers handled by module classes except scorecard
         add_action('wp_ajax_eos_save_scorecard', array($this, 'ajax_save_scorecard'));
+        add_action('wp_ajax_eos_complete_weekly_review', array($this, 'ajax_complete_weekly_review'));
+        add_action('wp_ajax_eos_get_issue_stats', array($this, 'ajax_get_issue_stats'));
     }
     
     /**
@@ -178,6 +180,43 @@ class EOS_Manager {
             'manage_options',
             'eos-meetings',
             array($this, 'render_meetings_page')
+        );
+
+        add_submenu_page(
+            null,
+            __('People Analyzer', 'eos-manager'),
+            __('People Analyzer', 'eos-manager'),
+            'manage_options',
+            'eos-people',
+            array($this, 'render_people_page')
+        );
+
+        add_submenu_page(
+            null,
+            __('Vision/Traction Organizer', 'eos-manager'),
+            __('Vision/Traction Organizer', 'eos-manager'),
+            'manage_options',
+            'eos-vto',
+            array($this, 'render_vto_page')
+        );
+
+        add_submenu_page(
+            null,
+            __('Weekly Review', 'eos-manager'),
+            __('Weekly Review', 'eos-manager'),
+            'manage_options',
+            'eos-weekly-review',
+            array($this, 'render_weekly_review_page')
+        );
+
+        // Settings submenu for integrations
+        add_submenu_page(
+            'eos-manager',
+            __('Google Calendar', 'eos-manager'),
+            __('Google Calendar', 'eos-manager'),
+            'manage_options',
+            'eos-google-calendar',
+            array($this, 'render_google_calendar_page')
         );
     }
     
@@ -302,6 +341,25 @@ class EOS_Manager {
             include EOS_MANAGER_PLUGIN_DIR . 'admin/views/meetings.php';
         }
     }
+
+    public function render_people_page() {
+        include EOS_MANAGER_PLUGIN_DIR . 'admin/views/people.php';
+    }
+
+    public function render_vto_page() {
+        include EOS_MANAGER_PLUGIN_DIR . 'admin/views/vto.php';
+    }
+
+    public function render_weekly_review_page() {
+        include EOS_MANAGER_PLUGIN_DIR . 'admin/views/weekly-review.php';
+    }
+
+    /**
+     * Render Google Calendar settings page
+     */
+    public function render_google_calendar_page() {
+        include EOS_MANAGER_PLUGIN_DIR . 'admin/views/google-calendar-settings.php';
+    }
     
     /**
      * AJAX handler for saving scorecard
@@ -327,6 +385,34 @@ class EOS_Manager {
         $result = EOS_Scorecard::save_metrics($sanitized);
 
         wp_send_json($result);
+    }
+
+    public function ajax_complete_weekly_review() {
+        check_ajax_referer('eos_nonce', 'nonce');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(__('Unauthorized', 'eos-manager'));
+        }
+
+        $activity_data = array(
+            'type' => 'review',
+            'title' => __('Weekly Review', 'eos-manager'),
+            'description' => __('Weekly review completed', 'eos-manager'),
+            'icon' => '✅'
+        );
+
+        do_action('eos_log_activity', $activity_data);
+
+        wp_send_json_success();
+    }
+
+    public function ajax_get_issue_stats() {
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(__('Unauthorized', 'eos-manager'));
+        }
+
+        $stats = EOS_Issues::get_stats();
+        wp_send_json_success($stats);
     }
 }
 
